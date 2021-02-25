@@ -1,7 +1,9 @@
 // required packages
+const { default: axios } = require('axios')
 const express = require('express')
 const ejsLayouts = require('express-ejs-layouts')
 const rowdy = require('rowdy-logger')
+const OMDB_API_KEY = process.env.OMDB_API_KEY
 
 // configure express app
 const app = express()
@@ -22,12 +24,22 @@ app.use(require('morgan')('dev'))
 
 // Routes
 app.get('/', function(req, res) {
-  res.send('Hello, backend!')
+  res.render('results.ejs', { movies: result.})
 })
 
+app.get('/results', () => {
+
+})
+
+app.get('/detail', (req, res) => {
+
+})
+
+
+app.get('/test', async (req, res) => {
+  const results = await axios.get('http://www.omdbapi.com/?s=freddy got fingered&apikey=${OMDB_API_KEY}&s=${req.query.search}')
 // The app.listen function returns a server handle
-app.listen(PORT, () => {
-  console.log(`listening on PORT:${PORT}`)
-  rowdyResults.print()
+  res.json({ movies:results.data})
+
 })
 
